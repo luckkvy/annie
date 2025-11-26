@@ -1,0 +1,143 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Annie</title>
+    <link rel="stylesheet" href="styles.css" />
+    <style>
+        body { font-family: courier, monospace; text-align: center; padding: 40px; background: #0f0f0f; }
+        #cardContainer { display: flex; justify-content: center; flex-wrap: wrap; margin-top: 30px; }
+        .card { width: 150px; height: 220px; margin: 10px; perspective: 1000px; cursor: pointer; }
+        .inner { position: relative; width: 100%; height: 100%; transition: transform 0.7s; transform-style: preserve-3d; }
+        .front, .back { position: absolute; width: 100%; height: 100%; backface-visibility: hidden; border-radius: 12px; }
+        .front { background: #333; }
+        .back { background-size: cover; background-position: center; transform: rotateY(180deg); }
+
+        @keyframes shuffle {
+            0% { transform: translateX(0); }
+            20% { transform: translateX(-25px) rotate(-4deg); }
+            40% { transform: translateX(25px) rotate(4deg); }
+            60% { transform: translateX(-15px) rotate(-3deg); }
+            100% { transform: translateX(0); }
+        }
+
+        #shuffleBtn { width: 200px; cursor: pointer; }
+    </style>
+</head>
+<body>
+    <h1>Annie</h1>
+    <img id="shuffleBtn" src="https://i.ibb.co/LdvyRJQF/Untitled-Artwork-29.png" alt="Shuffle" />
+
+    <div id="cardContainer"></div>
+
+    <script>
+        const pages = [1,2,3,4,5,6];
+        const cardImages = [
+            "https://i.ibb.co/bpXNmBy/IMG-1455.png",
+            "https://i.ibb.co/RkF08bz3/IMG-1454.png",
+            "https://i.ibb.co/GvVBw7m6/IMG-1453.png",
+            "https://i.ibb.co/k27R8S03/IMG-1451.png",
+            "https://i.ibb.co/1t9gBt7S/IMG-1450.png",
+            "https://i.ibb.co/RkrbFcc6/IMG-1452.png",
+        ];
+
+        function shuffle(arr) {
+            for (let i = arr.length - 1; i > 0; i--) {
+                const j = Math.floor(Math.random() * (i + 1));
+                [arr[i], arr[j]] = [arr[j], arr[i]];
+            }
+            return arr;
+        }
+
+        document.getElementById('shuffleBtn').addEventListener('click', () => {
+            const randomized = shuffle([...pages]);
+            const container = document.getElementById('cardContainer');
+            container.innerHTML = '';
+
+            randomized.forEach(num => {
+                const card = document.createElement('div');
+                card.className = 'card';
+
+                const inner = document.createElement('div');
+                inner.className = 'inner';
+
+                const front = document.createElement('div');
+                front.className = 'front';
+
+                const back = document.createElement('div');
+                back.className = 'back';
+                back.style.backgroundImage = `url(${cardImages[num - 1]})`;
+
+                inner.appendChild(front);
+                inner.appendChild(back);
+                card.appendChild(inner);
+                container.appendChild(card);
+
+                card.style.animation = 'shuffle 0.9s ease';
+
+                setTimeout(() => inner.style.transform = 'rotateY(180deg)', 600);
+
+                card.addEventListener('click', () => {
+                    window.location.href = `page${num}.html?order=${randomized.join(',')}`;
+                });
+            });
+        });
+    // Create the Start Story button only AFTER shuffling
+let randomizedOrder = null;
+
+// Modify shuffle button handler to set randomizedOrder and show Start Story button
+document.getElementById('shuffleBtn').addEventListener('click', () => {
+    const randomized = shuffle([...pages]);
+    randomizedOrder = randomized; // store for use by Start Story button
+
+    const container = document.getElementById('cardContainer');
+    container.innerHTML = '';
+
+    randomized.forEach(num => {
+        const card = document.createElement('div');
+        card.className = 'card';
+
+        const inner = document.createElement('div');
+        inner.className = 'inner';
+
+        const front = document.createElement('div');
+        front.className = 'front';
+
+        const back = document.createElement('div');
+        back.className = 'back';
+        back.style.backgroundImage = `url(${cardImages[num - 1]})`;
+
+        inner.appendChild(front);
+        inner.appendChild(back);
+        card.appendChild(inner);
+        container.appendChild(card);
+
+        card.style.animation = 'shuffle 0.9s ease';
+        setTimeout(() => inner.style.transform = 'rotateY(180deg)', 600);
+
+        card.addEventListener('click', () => {
+            window.location.href = `page${num}.html?order=${randomized.join(',')}`;
+        });
+    });
+
+    // Reveal the Start Story button after shuffle
+    nextBtn.style.display = 'block';
+});
+
+// Create Start Story button
+const nextBtn = document.createElement('button');
+nextBtn.textContent = 'Start Story';
+nextBtn.className = 'startBtn';
+nextBtn.style.display = 'none';
+nextBtn.style.margin = '30px auto';
+nextBtn.onclick = () => {
+    if (!randomizedOrder) return; // safety check
+    const firstPage = randomizedOrder[0];
+    window.location.href = `page${firstPage}.html?order=${randomizedOrder.join(',')}`;
+};
+
+document.body.appendChild(nextBtn);
+</script>
+</body>
+</html>
