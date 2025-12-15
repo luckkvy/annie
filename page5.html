@@ -66,8 +66,6 @@ body {
   <img class="box" src="https://i.ibb.co/My0TQdSB/Illustration101-2.png" style="top:15%;left:70%">
 </div>
 
-<button id="nextBtn">next</button>
-
 <style>
 .box {
   position: absolute;
@@ -79,26 +77,6 @@ body {
 <script>
 document.querySelectorAll(".box")
   .forEach(b => b.onclick = () => b.remove());
-
-/* ---------------------------
-   SHUFFLED NAVIGATION
-----------------------------*/
-const params = new URLSearchParams(window.location.search);
-const order = params.get("order")?.split(",").map(Number) || [];
-const currentPage = 5;
-const pageIndex = order.indexOf(currentPage);
-
-const nextBtn = document.getElementById("nextBtn");
-
-nextBtn.onclick = () => {
-    if (pageIndex >= 0 && pageIndex < order.length - 1) {
-        window.location.href =
-            `page${order[pageIndex + 1]}.html?order=${order.join(",")}`;
-    } else {
-        window.location.href = "index.html";
-    }
-};
-
 </script>
 
 </body>
