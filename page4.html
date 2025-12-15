@@ -77,26 +77,29 @@ const frames = [
 ];
 
 let currentIndex = 0;
+
 const frame = document.getElementById("frame");
 const overlay = document.getElementById("fadeOverlay");
-
 const scene = document.querySelector(".scene");
-scene.addEventListener("click", () => {
-    // Play the sound per click
-    const clickSound = new Audio("shattering-glass-101785.mp3"); // replace with your MP3 file path
-    clickSound.play().catch(e => console.log("Audio blocked by browser", e));
+const nextBtn = document.getElementById("nextBtn");
 
-    // Move to next frame
+// Scene click → advance frame + sound
+scene.addEventListener("click", () => {
+    const clickSound = new Audio("shattering-glass-101785.mp3");
+    clickSound.play().catch(() => {});
+
     currentIndex++;
+
     if (currentIndex < frames.length) {
         frame.src = frames[currentIndex];
     } else {
-        overlay.style.opacity = 1; // fade to black
+        overlay.style.opacity = 1;
     }
 });
 
+// Prevent scene click when pressing Next
 nextBtn.addEventListener("click", (e) => {
-    e.stopPropagation(); // prevents scene/body click
+    e.stopPropagation();
 });
 
 // ---------------------------
@@ -104,18 +107,20 @@ nextBtn.addEventListener("click", (e) => {
 // ---------------------------
 const params = new URLSearchParams(window.location.search);
 const order = params.get("order")?.split(",").map(Number) || [];
-const currentPage = 4; // This page's number
+
+const currentPage = 4;
 const pageIndex = order.indexOf(currentPage);
 
-const nextBtn = document.getElementById("nextBtn");
 nextBtn.onclick = () => {
     if (pageIndex >= 0 && pageIndex < order.length - 1) {
-        window.location.href = `page${order[pageIndex + 1]}.html?order=${order.join(",")}`;
+        window.location.href =
+            `page${order[pageIndex + 1]}.html?order=${order.join(",")}`;
     } else {
         window.location.href = "index.html";
     }
 };
 </script>
+
 </body>
 </html>
 
