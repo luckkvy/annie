@@ -80,7 +80,8 @@ let currentIndex = 0;
 const frame = document.getElementById("frame");
 const overlay = document.getElementById("fadeOverlay");
 
-document.body.addEventListener("click", () => {
+const scene = document.querySelector(".scene");
+scene.addEventListener("click", () => {
     // Play the sound per click
     const clickSound = new Audio("shattering-glass-101785.mp3"); // replace with your MP3 file path
     clickSound.play().catch(e => console.log("Audio blocked by browser", e));
@@ -93,7 +94,10 @@ document.body.addEventListener("click", () => {
         overlay.style.opacity = 1; // fade to black
     }
 });
-</script>
+
+nextBtn.addEventListener("click", (e) => {
+    e.stopPropagation(); // prevents scene/body click
+});
 
 // ---------------------------
 // SHUFFLED NAVIGATION
@@ -111,7 +115,7 @@ nextBtn.onclick = () => {
         window.location.href = "index.html";
     }
 };
-
+</script>
 </body>
 </html>
 
