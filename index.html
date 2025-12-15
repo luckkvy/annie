@@ -23,10 +23,25 @@
         }
 
         #shuffleBtn { width: 200px; cursor: pointer; }
+
+#nextBtn {
+    font-family: courier, monospace;
+    font-size: 22px;
+    padding: 10px 20px;
+    cursor: pointer;
+    position: fixed;
+    bottom: 30px;
+    left: 50%;
+    transform: translateX(-50%);
+    z-index: 100;
+}
+
+
     </style>
 </head>
 <body>
-    <h1>Annie</h1>
+    <h1 style="color: #fafafa;">Annie</h1>
+    <p style="color: #fafafa;"></p>
     <img id="shuffleBtn" src="https://i.ibb.co/LdvyRJQF/Untitled-Artwork-29.png" alt="Shuffle" />
 
     <div id="cardContainer"></div>
@@ -50,39 +65,6 @@
             return arr;
         }
 
-        document.getElementById('shuffleBtn').addEventListener('click', () => {
-            const randomized = shuffle([...pages]);
-            const container = document.getElementById('cardContainer');
-            container.innerHTML = '';
-
-            randomized.forEach(num => {
-                const card = document.createElement('div');
-                card.className = 'card';
-
-                const inner = document.createElement('div');
-                inner.className = 'inner';
-
-                const front = document.createElement('div');
-                front.className = 'front';
-
-                const back = document.createElement('div');
-                back.className = 'back';
-                back.style.backgroundImage = `url(${cardImages[num - 1]})`;
-
-                inner.appendChild(front);
-                inner.appendChild(back);
-                card.appendChild(inner);
-                container.appendChild(card);
-
-                card.style.animation = 'shuffle 0.9s ease';
-
-                setTimeout(() => inner.style.transform = 'rotateY(180deg)', 600);
-
-                card.addEventListener('click', () => {
-                    window.location.href = `page${num}.html?order=${randomized.join(',')}`;
-                });
-            });
-        });
     // Create the Start Story button only AFTER shuffling
 let randomizedOrder = null;
 
@@ -127,17 +109,18 @@ document.getElementById('shuffleBtn').addEventListener('click', () => {
 
 // Create Start Story button
 const nextBtn = document.createElement('button');
-nextBtn.textContent = 'Start Story';
-nextBtn.className = 'startBtn';
-nextBtn.style.display = 'none';
-nextBtn.style.margin = '30px auto';
+nextBtn.textContent = 'enter';
+nextBtn.id = 'nextBtn'; // changed to use the same CSS as the other next buttons
+nextBtn.style.display = 'none'; // hidden until shuffle
 nextBtn.onclick = () => {
     if (!randomizedOrder) return; // safety check
     const firstPage = randomizedOrder[0];
     window.location.href = `page${firstPage}.html?order=${randomizedOrder.join(',')}`;
 };
-
 document.body.appendChild(nextBtn);
+
 </script>
 </body>
 </html>
+
+
