@@ -45,8 +45,6 @@ body {
   <img id="frame" class="layer" src="https://i.ibb.co/ymSgVKDx/Hand-1.png">
 </div>
 
-<button id="nextBtn">next</button>
-
 <script>
 // ---------------------------
 // FRAME SWAPPING + AUDIO
@@ -69,24 +67,6 @@ scene.addEventListener("click", () => {
   const clickSound = new Audio("scissors-snip-multiple-times-73497.mp3");
   clickSound.play().catch(e => console.log("Audio blocked", e));
 });
-
-/* ---------------------------
-   SHUFFLED NAVIGATION
-----------------------------*/
-const params = new URLSearchParams(window.location.search);
-const order = params.get("order")?.split(",").map(Number) || [];
-const currentPage = 4;
-const pageIndex = order.indexOf(currentPage);
-
-const nextBtn = document.getElementById("nextBtn");
-nextBtn.onclick = () => {
-    if (pageIndex >= 0 && pageIndex < order.length - 1) {
-        window.location.href =
-            `page${order[pageIndex + 1]}.html?order=${order.join(",")}`;
-    } else {
-        window.location.href = "index.html";
-    }
-};
 
 </script>
 </body>
