@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Heart Page</title>
+
+<style>
+body {
+    margin: 0;
+    background: #0f0f0f;
+    font-family: courier, monospace;
+    overflow: hidden;
+}
+
+.scene {
+    position: relative;
+    width: 100vw;
+    height: 100vh;
+    overflow: hidden; /* ensures footprints stay inside */
+}
+
+.layer {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    object-fit: cover; /* fill the page */
+    pointer-events: none; /* top layer won't block cursor */
+}
+
+#topLayer {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: 100%;
+    height: 100%;
+    object-fit: contain;   /* scales image to fit within the scene */
+    transform: translate(-50%, -50%);  /* centers the image */
+    z-index: 10;  /* always above footprints */
+    pointer-events: none;
+}
+
+#nextBtn {
+    font-family: courier, monospace;
+    font-size: 22px;
+    padding: 10px 20px;
+    cursor: pointer;
+    position: fixed;
+    bottom: 30px;
+    left: 50%;
+    transform: translateX(-50%);
+    z-index: 100; /* above footprints */
+}
+
+.footprint {
+    position: absolute;
+    width: 60px;
+    opacity: 0.6;
+    transition: opacity 1.5s linear;
+    filter: blur(1px); /* subtle blur */
+    pointer-events: none; 
+    z-index: 10; /* below top layer */
+}
+</style>
+</head>
+
+<body>
+<div class="scene" id="scene">
+    <!-- Background fills the page -->
+    <img id="bg" class="layer" src="https://i.ibb.co/KpmB39QB/Illustration99-1.png">
+
+    <!-- Footprints container (under top layer) -->
+    <div id="footprintContainer" style="position:absolute; inset:0; z-index:5;"></div>
+
+    <!-- Top layer -->
+    <img id="topLayer" class="layer" src="https://i.ibb.co/Fq6jyywv/Illustration99-3.png" style="z-index:10;">
+</div>
+
+
+<button id="nextBtn">next</button>
+
+<script>
+const footprintContainer = document.getElementById("footprintContainer");
+let lastSpawn = 0;
+const spawnDelay = 200;
+
+scene.addEventListener("mousemove", e => {
+    const now = Date.now();
+    if (now - lastSpawn < spawnDelay) return;
+    lastSpawn = now;
+
+    const rect = scene.getBoundingClientRect();
+    const btnRect = nextBtn.getBoundingClientRect();
+
+    // Avoid footprints on next button
+    if (e.clientY >= btnRect.top) return;
+
+    let x = e.clientX - rect.left - 30;
+    let y = e.clientY - rect.top - 30;
+
+    // Clamp inside scene
+    x = Math.max(0, Math.min(rect.width - 60, x));
+    y = Math.max(0, Math.min(rect.height - 60, y));
+
+    const f = document.createElement("img");
+    f.src = "https://i.ibb.co/CsTn7kx5/Illustration99-2.png";
+    f.className = "footprint";
+    f.style.left = x + "px";
+    f.style.top = y + "px";
+
+    footprintContainer.appendChild(f);
+
+    setTimeout(() => f.style.opacity = 0, 50);
+    setTimeout(() => f.remove(), 1500);
+});
+
+
+/* ---------------------------
+   SHUFFLED NAVIGATION
+----------------------------*/
+const params = new URLSearchParams(window.location.search);
+const order = params.get("order")?.split(",").map(Number) || [];
+const currentPage = 1; // update for heart page
+const pageIndex = order.indexOf(currentPage);
+
+nextBtn.onclick = () => {
+    if (pageIndex >= 0 && pageIndex < order.length - 1) {
+        window.location.href = `page${order[pageIndex + 1]}.html?order=${order.join(",")}`;
+    } else {
+        window.location.href = "index.html";
+    }
+};
+</script>
+</body>
+</html>
+
