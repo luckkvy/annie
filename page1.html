@@ -78,9 +78,6 @@ body {
     <img id="topLayer" class="layer" src="https://i.ibb.co/Fq6jyywv/Illustration99-3.png" style="z-index:10;">
 </div>
 
-
-<button id="nextBtn">next</button>
-
 <script>
 const footprintContainer = document.getElementById("footprintContainer");
 let lastSpawn = 0;
@@ -116,24 +113,6 @@ scene.addEventListener("mousemove", e => {
     setTimeout(() => f.remove(), 1500);
 });
 
-
-/* ---------------------------
-   SHUFFLED NAVIGATION
-----------------------------*/
-const params = new URLSearchParams(window.location.search);
-const order = params.get("order")?.split(",").map(Number) || [];
-const currentPage = 1; // update for heart page
-const pageIndex = order.indexOf(currentPage);
-
-    const nextBtn = document.getElementById("nextBtn");
-
-nextBtn.onclick = () => {
-    if (pageIndex >= 0 && pageIndex < order.length - 1) {
-        window.location.href = `page${order[pageIndex + 1]}.html?order=${order.join(",")}`;
-    } else {
-        window.location.href = "index.html";
-    }
-};
 </script>
 </body>
 </html>
