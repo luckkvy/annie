@@ -103,22 +103,6 @@ document.getElementById('shuffleBtn').addEventListener('click', () => {
         });
     });
 
-    // Reveal the Start Story button after shuffle
-    nextBtn.style.display = 'block';
-});
-
-// Create Start Story button
-const nextBtn = document.createElement('button');
-nextBtn.textContent = 'enter';
-nextBtn.id = 'nextBtn'; // changed to use the same CSS as the other next buttons
-nextBtn.style.display = 'none'; // hidden until shuffle
-nextBtn.onclick = () => {
-    if (!randomizedOrder) return; // safety check
-    const firstPage = randomizedOrder[0];
-    window.location.href = `page${firstPage}.html?order=${randomizedOrder.join(',')}`;
-};
-document.body.appendChild(nextBtn);
-
 </script>
 </body>
 </html>
