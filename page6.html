@@ -123,6 +123,8 @@ const order = params.get("order")?.split(",").map(Number) || [];
 const currentPage = 6; // CHANGE THIS
 const index = order.indexOf(currentPage);
 
+    const nextBtn = document.getElementById("nextBtn");
+
 nextBtn.onclick = () => {
     window.location.href =
         index >= 0 && index < order.length - 1
