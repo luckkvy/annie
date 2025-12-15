@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Scissors</title>
+
+<style>
+body {
+    margin: 0;
+    background: #0f0f0f;
+    font-family: courier, monospace;
+    overflow: hidden;
+    text-align: center;
+}
+
+.scene {
+    position: relative;
+    width: 100vw;
+    height: 90vh;
+}
+
+.layer {
+    max-height: 100%;
+    max-width: 100%;
+    cursor: pointer;
+}
+
+#nextBtn {
+    font-family: courier, monospace;
+    font-size: 22px;
+    padding: 10px 20px;
+    cursor: pointer;
+    position: fixed;
+    bottom: 30px;
+    left: 50%;
+    transform: translateX(-50%);
+    z-index: 100;
+}
+</style>
+</head>
+<body>
+
+<div class="scene" id="scene">
+  <img id="frame" class="layer" src="https://i.ibb.co/ymSgVKDx/Hand-1.png">
+</div>
+
+<button id="nextBtn">next</button>
+
+<script>
+// ---------------------------
+// FRAME SWAPPING + AUDIO
+// ---------------------------
+const frames = [
+  "https://i.ibb.co/ymSgVKDx/Hand-1.png",
+  "https://i.ibb.co/nNgVqkYS/Hand.png"
+];
+let frameIndex = 0;
+
+const scene = document.getElementById("scene");
+const frame = document.getElementById("frame");
+
+scene.addEventListener("click", () => {
+  // Swap frame
+  frameIndex = (frameIndex + 1) % frames.length;
+  frame.src = frames[frameIndex];
+
+  // Play sound per click
+  const clickSound = new Audio("scissors-snip-multiple-times-73497.mp3");
+  clickSound.play().catch(e => console.log("Audio blocked", e));
+});
+
+/* ---------------------------
+   SHUFFLED NAVIGATION
+----------------------------*/
+const params = new URLSearchParams(window.location.search);
+const order = params.get("order")?.split(",").map(Number) || [];
+const currentPage = 4;
+const pageIndex = order.indexOf(currentPage);
+
+const nextBtn = document.getElementById("nextBtn");
+nextBtn.onclick = () => {
+    if (pageIndex >= 0 && pageIndex < order.length - 1) {
+        window.location.href =
+            `page${order[pageIndex + 1]}.html?order=${order.join(",")}`;
+    } else {
+        window.location.href = "index.html";
+    }
+};
+
+</script>
+</body>
+</html>
