@@ -53,6 +53,7 @@ body {
     left: 50%;
     transform: translateX(-50%);
     z-index: 100;
+    visibility: hidden;
 }
 </style>
 </head>
@@ -63,11 +64,14 @@ body {
     <div id="fadeOverlay"></div>
 </div>
 
+<button id="nextBtn">next</button>
+
 <script>
 // ---------------------------
 // Frame click logic
 // ---------------------------
 const frames = [
+    "https://i.ibb.co/Z1x45ry7/Illustration97-4.png",
     "https://i.ibb.co/Z1x45ry7/Illustration97-4.png",
     "https://i.ibb.co/TqBkb3DW/Illustration97-2.png",
     "https://i.ibb.co/5xTpgR1t/Illustration97-1.png",
@@ -100,8 +104,24 @@ nextBtn.addEventListener("click", (e) => {
     e.stopPropagation();
 });
 
+// ---------------------------
+// SHUFFLED NAVIGATION
+// ---------------------------
+const params = new URLSearchParams(window.location.search);
+const order = params.get("order")?.split(",").map(Number) || [];
+
+const currentPage = 4;
+const pageIndex = order.indexOf(currentPage);
+
+nextBtn.onclick = () => {
+    if (pageIndex >= 0 && pageIndex < order.length - 1) {
+        window.location.href =
+            `page${order[pageIndex + 1]}.html?order=${order.join(",")}`;
+    } else {
+        window.location.href = "index.html";
+    }
+};
 </script>
 
 </body>
 </html>
-
