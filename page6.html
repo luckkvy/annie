@@ -95,8 +95,6 @@ body {
 
 </div>
 
-<button id="nextBtn">next</button>
-
 <script>
 /* ---------------------------
    FLASHLIGHT HOLE (SVG)
@@ -115,22 +113,6 @@ scene.addEventListener("mousemove", (e) => {
     hole.setAttribute("cy", y);
 });
 
-/* ---------------------------
-   SHUFFLED NAVIGATION
-----------------------------*/
-const params = new URLSearchParams(window.location.search);
-const order = params.get("order")?.split(",").map(Number) || [];
-const currentPage = 6; // CHANGE THIS
-const index = order.indexOf(currentPage);
-
-    const nextBtn = document.getElementById("nextBtn");
-
-nextBtn.onclick = () => {
-    window.location.href =
-        index >= 0 && index < order.length - 1
-            ? `page${order[index + 1]}.html?order=${order.join(",")}`
-            : "index.html";
-};
 </script>
 
 </body>
