@@ -73,27 +73,7 @@
     <img id="charTop" class="layer" src="https://i.ibb.co/LzVmjStP/Illustration95-4.png">
 </div>
 
-<button id="nextBtn">next</button>
-
 <script>
-/* ---------------------------
-   SHUFFLED NAVIGATION
-----------------------------*/
-const params = new URLSearchParams(window.location.search);
-const order = params.get("order")?.split(",").map(Number) || [];
-const currentPage = 2;
-const pageIndex = order.indexOf(currentPage);
-
-const nextBtn = document.getElementById("nextBtn");
-
-nextBtn.onclick = () => {
-    if (pageIndex >= 0 && pageIndex < order.length - 1) {
-        window.location.href =
-            `page${order[pageIndex + 1]}.html?order=${order.join(",")}`;
-    } else {
-        window.location.href = "index.html";
-    }
-};
 
 /* ---------------------------
    EYE TRACKING (ONLY PUPILS)
