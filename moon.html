@@ -77,22 +77,21 @@
 
 <script>
 /* ---------------------------
-   URL ORDER SYSTEM
+   SHUFFLED NAVIGATION
 ----------------------------*/
 const params = new URLSearchParams(window.location.search);
-const order = params.get("order")?.split(",").map(n => parseInt(n)) || [1];
-const currentPage = 1;
-const currentIndex = order.indexOf(currentPage);
+const order = params.get("order")?.split(",").map(Number) || [];
+const currentPage = 2;
+const pageIndex = order.indexOf(currentPage);
 
-// Determine next page in shuffled order
-let nextPage = null;
-if (currentIndex >= 0 && currentIndex < order.length - 1) {
-    nextPage = order[currentIndex + 1];
-}
+const nextBtn = document.getElementById("nextBtn");
 
-document.getElementById("nextBtn").onclick = () => {
-    if (nextPage) {
-        window.location.href = `page${nextPage}.html?order=${order.join(",")}`;
+nextBtn.onclick = () => {
+    if (pageIndex >= 0 && pageIndex < order.length - 1) {
+        window.location.href =
+            `page${order[pageIndex + 1]}.html?order=${order.join(",")}`;
+    } else {
+        window.location.href = "index.html";
     }
 };
 
@@ -125,4 +124,5 @@ document.addEventListener("mousemove", (e) => {
 
 </body>
 </html>
+
 
