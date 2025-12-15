@@ -125,6 +125,8 @@ const order = params.get("order")?.split(",").map(Number) || [];
 const currentPage = 1; // update for heart page
 const pageIndex = order.indexOf(currentPage);
 
+    const nextBtn = document.getElementById("nextBtn");
+
 nextBtn.onclick = () => {
     if (pageIndex >= 0 && pageIndex < order.length - 1) {
         window.location.href = `page${order[pageIndex + 1]}.html?order=${order.join(",")}`;
