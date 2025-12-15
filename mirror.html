@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Mirror</title>
+
+<style>
+body {
+    margin: 0;
+    background: #0f0f0f;
+    font-family: courier, monospace;
+    overflow: hidden;
+    text-align: center;
+}
+
+.scene {
+    position: relative;
+    width: 100vw;
+    height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background: #0f0f0f;
+}
+
+.layer {
+    max-width: 90%;
+    max-height: 90%;
+    object-fit: contain; /* ensures frames are proportional and don't stretch */
+    pointer-events: none;
+}
+
+#fadeOverlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: black;
+    opacity: 0;
+    transition: opacity 2s ease;
+    z-index: 50;
+}
+
+#nextBtn {
+    font-family: courier, monospace;
+    font-size: 22px;
+    padding: 10px 20px;
+    cursor: pointer;
+    position: fixed;
+    bottom: 30px;
+    left: 50%;
+    transform: translateX(-50%);
+    z-index: 100;
+}
+</style>
+</head>
+
+<body>
+<div class="scene">
+    <img id="frame" class="layer" src="https://i.ibb.co/7tVc8zf6/Illustration97.png">
+    <div id="fadeOverlay"></div>
+</div>
+
+<button id="nextBtn">next</button>
+
+<script>
+// ---------------------------
+// Frame click logic
+// ---------------------------
+const frames = [
+    "https://i.ibb.co/Z1x45ry7/Illustration97-4.png",
+    "https://i.ibb.co/TqBkb3DW/Illustration97-2.png",
+    "https://i.ibb.co/5xTpgR1t/Illustration97-1.png",
+    "https://i.ibb.co/n8c5kb19/Illustration97-3.png"
+];
+
+let currentIndex = 0;
+const frame = document.getElementById("frame");
+const overlay = document.getElementById("fadeOverlay");
+
+document.body.addEventListener("click", () => {
+    // Play the sound per click
+    const clickSound = new Audio("shattering-glass-101785.mp3"); // replace with your MP3 file path
+    clickSound.play().catch(e => console.log("Audio blocked by browser", e));
+
+    // Move to next frame
+    currentIndex++;
+    if (currentIndex < frames.length) {
+        frame.src = frames[currentIndex];
+    } else {
+        overlay.style.opacity = 1; // fade to black
+    }
+});
+</script>
+
+// ---------------------------
+// SHUFFLED NAVIGATION
+// ---------------------------
+const params = new URLSearchParams(window.location.search);
+const order = params.get("order")?.split(",").map(Number) || [];
+const currentPage = 4; // This page's number
+const pageIndex = order.indexOf(currentPage);
+
+const nextBtn = document.getElementById("nextBtn");
+nextBtn.onclick = () => {
+    if (pageIndex >= 0 && pageIndex < order.length - 1) {
+        window.location.href = `page${order[pageIndex + 1]}.html?order=${order.join(",")}`;
+    } else {
+        window.location.href = "index.html";
+    }
+};
+
+</body>
+</html>
+
