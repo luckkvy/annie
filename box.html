@@ -1,1 +1,106 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Box</title>
+
+<style>
+body {
+    margin: 0;
+    background: #0f0f0f;
+    font-family: courier, monospace;
+    overflow: hidden;
+    text-align: center;
+}
+
+.scene {
+    position: relative;
+    width: 100vw;
+    height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background: #0f0f0f;
+}
+
+.layer {
+    max-width: 90%;
+    max-height: 90%;
+    object-fit: contain; /* ensures frames are proportional and don't stretch */
+    pointer-events: none;
+}
+
+#fadeOverlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: black;
+    opacity: 0;
+    transition: opacity 2s ease;
+    z-index: 50;
+}
+
+#nextBtn {
+    font-family: courier, monospace;
+    font-size: 22px;
+    padding: 10px 20px;
+    cursor: pointer;
+    position: fixed;
+    bottom: 30px;
+    left: 50%;
+    transform: translateX(-50%);
+    z-index: 100;
+}
+</style>
+</head>
+
+<body>
+<div class="scene">
+  <img class="layer" src="https://i.ibb.co/ch44h1fb/IMG-1532.gif">
+
+  <img class="box" src="https://i.ibb.co/DPkSctpb/Illustration101.png" style="top:20%;left:15%">
+  <img class="box" src="https://i.ibb.co/SDqw2nMX/Illustration101-1.png" style="top:60%;left:40%">
+  <img class="box" src="https://i.ibb.co/My0TQdSB/Illustration101-2.png" style="top:15%;left:70%">
+</div>
+
+<button id="nextBtn">next</button>
+
+<style>
+.box {
+  position: absolute;
+  width: 120px;
+  cursor: pointer;
+}
+</style>
+
+<script>
+document.querySelectorAll(".box")
+  .forEach(b => b.onclick = () => b.remove());
+
+/* ---------------------------
+   SHUFFLED NAVIGATION
+----------------------------*/
+const params = new URLSearchParams(window.location.search);
+const order = params.get("order")?.split(",").map(Number) || [];
+const currentPage = 5;
+const pageIndex = order.indexOf(currentPage);
+
+const nextBtn = document.getElementById("nextBtn");
+
+nextBtn.onclick = () => {
+    if (pageIndex >= 0 && pageIndex < order.length - 1) {
+        window.location.href =
+            `page${order[pageIndex + 1]}.html?order=${order.join(",")}`;
+    } else {
+        window.location.href = "index.html";
+    }
+};
+
+</script>
+
+</body>
+</html>
 
