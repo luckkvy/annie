@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Cigarette</title>
+
+<style>
+body {
+    margin: 0;
+    background: #0f0f0f;
+    font-family: courier, monospace;
+    overflow: hidden;
+}
+
+.scene {
+    position: relative;
+    width: 100%;
+    height: 90vh;
+}
+
+.layer {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+}
+
+
+#nextBtn {
+    font-family: courier, monospace;
+    font-size: 22px;
+    padding: 10px 20px;
+    cursor: pointer;
+
+    position: fixed;
+    bottom: 30px;  /* distance from bottom */
+    left: 50%;
+    transform: translateX(-50%);
+}
+</style>
+</head>
+
+<body>
+
+<div class="scene" id="scene">
+
+<svg
+  class="layer"
+  viewBox="0 0 100 100"
+  preserveAspectRatio="xMidYMid meet"
+>
+
+<defs>
+  <!-- Blur filter for soft flashlight edge -->
+  <filter id="softBlur" x="-50%" y="-50%" width="200%" height="200%">
+    <feGaussianBlur stdDeviation="1.5" />
+  </filter>
+
+  <!-- Mask with blurred hole -->
+  <mask id="holeMask">
+    <rect width="100%" height="100%" fill="white"/>
+    <circle
+      id="hole"
+      cx="50"
+      cy="50"
+      r="10"
+      fill="black"
+      filter="url(#softBlur)"
+    />
+  </mask>
+</defs>
+
+
+  <!-- Bottom image -->
+  <image
+    href="https://i.ibb.co/zVk8mpZ1/Illustration102.png"
+    width="100%"
+    height="100%"
+    preserveAspectRatio="xMidYMid meet"
+  />
+
+  <!-- Top image with flashlight hole -->
+  <image
+    href="https://i.ibb.co/nN4QdNcy/Illustration102-1.png"
+    width="100%"
+    height="100%"
+    preserveAspectRatio="xMidYMid meet"
+    mask="url(#holeMask)"
+  />
+
+</svg>
+
+
+
+</div>
+
+<button id="nextBtn">next</button>
+
+<script>
+/* ---------------------------
+   FLASHLIGHT HOLE (SVG)
+----------------------------*/
+const scene = document.getElementById("scene");
+const hole = document.getElementById("hole");
+
+scene.addEventListener("mousemove", (e) => {
+    const rect = scene.getBoundingClientRect();
+
+    // Convert mouse to percentage (0–100)
+    const x = ((e.clientX - rect.left) / rect.width) * 100;
+    const y = ((e.clientY - rect.top) / rect.height) * 100;
+
+    hole.setAttribute("cx", x);
+    hole.setAttribute("cy", y);
+});
+
+/* ---------------------------
+   SHUFFLED NAVIGATION
+----------------------------*/
+const params = new URLSearchParams(window.location.search);
+const order = params.get("order")?.split(",").map(Number) || [];
+const currentPage = 6; // CHANGE THIS
+const index = order.indexOf(currentPage);
+
+nextBtn.onclick = () => {
+    window.location.href =
+        index >= 0 && index < order.length - 1
+            ? `page${order[index + 1]}.html?order=${order.join(",")}`
+            : "index.html";
+};
+</script>
+
+</body>
+</html>
